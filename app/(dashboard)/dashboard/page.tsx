@@ -119,42 +119,44 @@ export default async function DashboardPage() {
           </Link>
         </Card>
 
-        <Card id="attention" className="scroll-mt-24 p-5 sm:p-6">
-          <div className="flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-xl bg-amber-50 text-amber-600">
-              <AlertTriangle size={19} />
+        <div id="attention" className="scroll-mt-24">
+          <Card className="h-full p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-amber-50 text-amber-600">
+                <AlertTriangle size={19} />
+              </div>
+              <div>
+                <p className="label">Prioritas</p>
+                <h2 className="text-lg font-extrabold">Perlu Perhatian</h2>
+              </div>
             </div>
-            <div>
-              <p className="label">Prioritas</p>
-              <h2 className="text-lg font-extrabold">Perlu Perhatian</h2>
-            </div>
-          </div>
-          <div className="mt-4 space-y-3">
-            {data.attention.length ? (
-              data.attention.slice(0, 4).map((a) => (
-                <Link
-                  href={`/students/${a.studentId}`}
-                  key={a.id}
-                  className="block rounded-xl border border-line p-3 transition hover:border-teal-200 hover:bg-teal-50"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-bold">
-                        {a.studentName} <span className="font-medium text-muted">• {a.className}</span>
-                      </p>
-                      <p className="mt-1 text-xs leading-5 text-muted">{a.text}</p>
+            <div className="mt-4 space-y-3">
+              {data.attention.length ? (
+                data.attention.slice(0, 4).map((a) => (
+                  <Link
+                    href={`/students/${a.studentId}`}
+                    key={a.id}
+                    className="block rounded-xl border border-line p-3 transition hover:border-teal-200 hover:bg-teal-50"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold">
+                          {a.studentName} <span className="font-medium text-muted">• {a.className}</span>
+                        </p>
+                        <p className="mt-1 text-xs leading-5 text-muted">{a.text}</p>
+                      </div>
+                      <ArrowRight className="shrink-0 text-slate-300" size={16} />
                     </div>
-                    <ArrowRight className="shrink-0 text-slate-300" size={16} />
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <p className="rounded-xl bg-emerald-50 p-4 text-sm text-emerald-700">
-                Tidak ada prioritas aktif. Semua fokus pembinaan terkendali.
-              </p>
-            )}
-          </div>
-        </Card>
+                  </Link>
+                ))
+              ) : (
+                <p className="rounded-xl bg-emerald-50 p-4 text-sm text-emerald-700">
+                  Tidak ada prioritas aktif. Semua fokus pembinaan terkendali.
+                </p>
+              )}
+            </div>
+          </Card>
+        </div>
       </section>
 
       <section>
