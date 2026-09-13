@@ -27,20 +27,24 @@ function PanelFallback() {
   );
 }
 
-export default function DashboardPage() {
-  const emptySearchParams = Promise.resolve({} as { period?: string; date?: string });
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ period?: string; date?: string }> }) {
+  const params = await searchParams;
+  const isMonthPeriod = /^\d{4}-\d{2}$/.test(params.period ?? "");
+  const attendanceParams = Promise.resolve(params.date ? { date: params.date } : {});
+  const monthlyParams = Promise.resolve(isMonthPeriod ? { period: params.period } : {});
+  const semesterParams = Promise.resolve(params.period && !isMonthPeriod ? { period: params.period } : {});
 
   return (
     <DashboardWorkspace
       panels={{
         dashboard: <Suspense fallback={<PanelFallback />}><DashboardHome /></Suspense>,
-        attendance: <Suspense fallback={<PanelFallback />}><AttendancePage searchParams={emptySearchParams} /></Suspense>,
+        attendance: <Suspense fallback={<PanelFallback />}><AttendancePage searchParams={attendanceParams} /></Suspense>,
         submissions: <Suspense fallback={<PanelFallback />}><SubmissionsPage /></Suspense>,
         murajaah: <Suspense fallback={<PanelFallback />}><MurajaahPage /></Suspense>,
         students: <Suspense fallback={<PanelFallback />}><StudentsPage /></Suspense>,
         progress: <Suspense fallback={<PanelFallback />}><ProgressPage /></Suspense>,
-        monthly: <Suspense fallback={<PanelFallback />}><MonthlyReportPage searchParams={emptySearchParams} /></Suspense>,
-        semester: <Suspense fallback={<PanelFallback />}><SemesterReportPage searchParams={emptySearchParams} /></Suspense>,
+        monthly: <Suspense fallback={<PanelFallback />}><MonthlyReportPage searchParams={monthlyParams} /></Suspense>,
+        semester: <Suspense fallback={<PanelFallback />}><SemesterReportPage searchParams={semesterParams} /></Suspense>,
         settings: <SettingsPage />,
       }}
     />
