@@ -23,6 +23,7 @@ export default async function SemesterReportPage({ searchParams }: { searchParam
       </div>
 
       <form className="card flex flex-wrap items-end gap-3 p-4">
+        <input type="hidden" name="panel" value="semester" />
         <div className="min-w-0 flex-1 sm:max-w-md">
           <label className="mb-1.5 block text-xs font-bold">Periode Semester</label>
           <select name="period" defaultValue={periodCode} className="input">
