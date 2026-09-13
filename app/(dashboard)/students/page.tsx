@@ -1,7 +1,21 @@
-import Link from "next/link";
-import { ArrowRight, Search, TrendingDown, TrendingUp, Minus } from "lucide-react";
-import { Badge, Card, Progress } from "@/components/ui";
+import { StudentDirectory } from "@/components/student-directory";
 import { getStudentOverviews } from "@/lib/data";
-export const dynamic="force-dynamic";
-export default async function StudentsPage(){const students=await getStudentOverviews();return <div className="mx-auto max-w-7xl space-y-5"><div><p className="label">Pembinaan Individual</p><h1 className="mt-1 text-2xl font-extrabold">Siswa Binaan Saya</h1><p className="mt-1 text-sm text-muted">Lihat posisi hafalan, kehadiran, fokus pembinaan, dan histori setiap siswa.</p></div><div className="relative max-w-lg"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={17}/><input className="input pl-10" placeholder="Cari siswa..."/></div><div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{students.map(s=><Link href={`/students/${s.id}`} key={s.id}><Card className="h-full p-5 transition hover:-translate-y-0.5 hover:border-teal-200"><div className="flex items-start gap-3"><div className="grid h-12 w-12 place-items-center rounded-2xl bg-teal-50 font-extrabold text-teal-800">{s.full_name[0]}</div><div className="min-w-0 flex-1"><div className="flex items-center gap-2"><h3 className="truncate font-extrabold">{s.full_name}</h3><Badge>Kelas {s.class_name}</Badge></div><p className="mt-1 truncate text-xs text-muted">{s.lastMemorization}</p></div><ArrowRight size={17} className="text-slate-300"/></div><div className="mt-5 flex items-end justify-between"><div><div className="text-[11px] font-semibold text-muted">Progress hafalan</div><div className="mt-1 text-2xl font-extrabold text-teal-800">{s.progressPercent}%</div></div><Trend trend={s.trend}/></div><Progress value={s.progressPercent} className="mt-3"/><div className="mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl bg-slate-50 p-3"><div className="text-muted">Kehadiran</div><div className="mt-1 font-extrabold">{s.attendanceRate}%</div></div><div className="rounded-xl bg-slate-50 p-3"><div className="text-muted">Nilai rata-rata</div><div className="mt-1 font-extrabold">{s.averageScore.toFixed(1)}</div></div></div>{s.focus&&<div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">📌 {s.focus}</div>}</Card></Link>)}</div></div>}
-function Trend({trend}:{trend:"meningkat"|"stabil"|"menurun"}){const map={meningkat:{Icon:TrendingUp,text:"Meningkat",cls:"text-emerald-600 bg-emerald-50"},stabil:{Icon:Minus,text:"Stabil",cls:"text-slate-600 bg-slate-100"},menurun:{Icon:TrendingDown,text:"Menurun",cls:"text-red-600 bg-red-50"}};const x=map[trend];return <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold ${x.cls}`}><x.Icon size={12}/>{x.text}</span>}
+
+export const dynamic = "force-dynamic";
+
+export default async function StudentsPage() {
+  const students = await getStudentOverviews();
+
+  return (
+    <div className="mx-auto max-w-7xl space-y-5">
+      <div>
+        <p className="label">Pembinaan Individual</p>
+        <h1 className="mt-1 text-2xl font-extrabold">Siswa Binaan Saya</h1>
+        <p className="mt-1 max-w-2xl text-sm leading-6 text-muted">
+          Cari siswa dengan cepat, lihat posisi hafalan, kehadiran, fokus pembinaan, dan histori setiap siswa.
+        </p>
+      </div>
+      <StudentDirectory students={students} />
+    </div>
+  );
+}
