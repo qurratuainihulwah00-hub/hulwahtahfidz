@@ -12,7 +12,7 @@ import { Card, Progress } from "@/components/ui";
 import { getDashboardDataFast } from "@/lib/data-fast";
 import { pct } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 15;
 
 export default async function DashboardPage() {
   const data = await getDashboardDataFast();
@@ -31,27 +31,28 @@ export default async function DashboardPage() {
         <div className="pointer-events-none absolute -left-20 bottom-[-90px] h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
         <div className="pointer-events-none absolute left-[42%] top-[-90px] h-64 w-64 rounded-full bg-white/10 blur-3xl" />
         <div className="pointer-events-none absolute right-[-70px] top-[-70px] h-52 w-52 rounded-full border border-white/10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-[46%] bg-gradient-to-l from-cyan-200/10 via-teal-500/5 to-transparent sm:w-[40%]" />
-        <div className="pointer-events-none absolute bottom-4 right-3 h-40 w-40 rounded-full bg-cyan-200/15 blur-3xl sm:bottom-8 sm:right-12 sm:h-56 sm:w-56" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-[48%] bg-gradient-to-l from-cyan-100/14 via-teal-500/5 to-transparent sm:w-[42%]" />
+        <div className="pointer-events-none absolute bottom-0 right-0 z-[1] h-[245px] w-[158px] overflow-hidden sm:inset-y-0 sm:h-auto sm:w-[40%] md:w-[38%]">
+          <div className="absolute inset-0 bg-gradient-to-l from-cyan-100/12 via-transparent to-transparent" />
+          <img
+            src="/hulwah-portrait-pro.webp"
+            alt="Hulwah Qurratu Aini, S.Pd."
+            loading="eager"
+            decoding="async"
+            className="absolute left-1/2 top-0 h-[315px] w-auto max-w-none -translate-x-1/2 object-contain drop-shadow-[0_22px_30px_rgba(4,47,46,0.28)] sm:top-[-34px] sm:h-[500px] md:top-[-52px] md:h-[540px]"
+          />
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 right-[34%] z-[2] hidden w-24 bg-gradient-to-r from-teal-800/20 to-transparent sm:block" />
 
-        <img
-          src="/hulwah-portrait-pro.webp"
-          alt="Hulwah Qurratu Aini, S.Pd."
-          loading="eager"
-          decoding="async"
-          className="pointer-events-none absolute bottom-[-34px] right-[-18px] z-[1] h-[235px] w-auto max-w-none object-contain drop-shadow-[0_22px_30px_rgba(4,47,46,0.28)] sm:bottom-[-52px] sm:right-[10px] sm:h-[305px] md:bottom-[-62px] md:right-[2%] md:h-[355px] lg:right-[5%]"
-        />
-        <div className="pointer-events-none absolute inset-y-0 right-[32%] z-[2] hidden w-28 bg-gradient-to-r from-teal-800/30 to-transparent sm:block" />
-
-        <div className="relative z-10 flex min-h-[350px] max-w-full flex-col justify-between gap-6 sm:min-h-[302px] sm:max-w-[67%] md:min-h-[261px] md:max-w-[64%] lg:max-w-[62%]">
+        <div className="relative z-10 flex min-h-[350px] max-w-full flex-col justify-between gap-6 sm:min-h-[302px] sm:max-w-[68%] md:min-h-[261px] md:max-w-[64%] lg:max-w-[62%]">
           <div>
             <div className="mb-3 inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] font-bold tracking-[.16em] text-white/85 backdrop-blur-md sm:text-[11px]">
               TRACK • GUIDE • GROW
             </div>
-            <h1 className="max-w-[92%] text-[27px] font-extrabold leading-[1.08] tracking-tight sm:max-w-3xl sm:text-3xl md:text-4xl">
+            <h1 className="max-w-full text-[27px] font-extrabold leading-[1.08] tracking-tight sm:max-w-3xl sm:text-3xl md:text-4xl">
               Assalamu&apos;alaikum, <span className="text-cyan-100">{data.teacherName}</span> 👋
             </h1>
-            <p className="mt-3 max-w-[92%] text-sm leading-6 text-white/80 sm:max-w-2xl md:text-[15px]">
+            <p className="mt-3 max-w-[calc(100%_-_118px)] text-sm leading-6 text-white/80 sm:max-w-2xl md:text-[15px]">
               Hari ini ada <b className="text-white">{data.present} siswa hadir</b>.{" "}
               {data.present === 0
                 ? "Absensi hari ini belum dicatat."
@@ -64,7 +65,7 @@ export default async function DashboardPage() {
               <span>Personal Tahfidz Dashboard • Hulwah Qurratu Aini, S.Pd.</span>
             </div>
           </div>
-          <div className="max-w-[56%] sm:max-w-none">
+          <div className="max-w-[58%] sm:max-w-none">
             <Link
               href="/submissions"
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-teal-800 shadow-xl shadow-teal-950/10 transition duration-150 hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25 active:translate-y-0"
