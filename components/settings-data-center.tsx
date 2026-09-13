@@ -36,7 +36,9 @@ type ModalState =
   | null;
 
 type DeleteState =
-  | { type: "student" | "target" | "period"; row: DataRow; label: string }
+  | { type: "student"; row: DataRow; label: string }
+  | { type: "target"; row: DataRow; label: string }
+  | { type: "period"; row: DataRow; label: string }
   | { type: "record"; kind: RecordKind; row: DataRow; label: string }
   | null;
 
