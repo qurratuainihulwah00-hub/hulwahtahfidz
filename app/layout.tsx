@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const HULWAH_FAVICON = "/hulwah-avatar-pro.webp?v=20260913-2";
+
 export const metadata: Metadata = {
   title: { default: "Tahfidz with Hulwah", template: "%s · Tahfidz with Hulwah" },
   description: "Personal Tahfidz Dashboard — Track • Guide • Grow",
   icons: {
-    icon: [{ url: "/hulwah-avatar-pro.webp", type: "image/webp" }],
-    shortcut: "/hulwah-avatar-pro.webp",
-    apple: "/hulwah-avatar-pro.webp",
+    icon: [{ url: HULWAH_FAVICON, type: "image/webp" }],
+    shortcut: HULWAH_FAVICON,
+    apple: HULWAH_FAVICON,
   },
 };
 
