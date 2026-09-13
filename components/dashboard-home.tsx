@@ -21,8 +21,8 @@ export async function DashboardHome() {
   const stats = [
     { label: "Siswa Binaan", value: total, icon: Users, sub: "dari kelas yang Anda dampingi" },
     { label: "Hadir Hari Ini", value: data.present, icon: CalendarCheck2, sub: `${data.izin} izin • ${data.sakit} sakit` },
-    { label: "Sudah Setor", value: data.submitted, icon: CheckCircle2, sub: `${progress}% dari siswa hadir` },
-    { label: "Belum Setor", value: data.waiting, icon: Clock3, sub: "menunggu setoran hari ini" },
+    { label: "Sudah Setor Baru", value: data.submitted, icon: CheckCircle2, sub: `${progress}% dari siswa hadir` },
+    { label: "Belum Setor Baru", value: data.waiting, icon: Clock3, sub: "menunggu hafalan baru hari ini" },
   ];
 
   return (
@@ -59,8 +59,8 @@ export async function DashboardHome() {
               {data.present === 0
                 ? "Absensi hari ini belum dicatat."
                 : data.waiting > 0
-                  ? `${data.waiting} siswa masih menunggu setoran.`
-                  : "Semua siswa hadir sudah menyelesaikan setoran. MasyaAllah!"}
+                  ? `${data.waiting} siswa masih menunggu setoran hafalan baru.`
+                  : "Semua siswa hadir sudah menyelesaikan hafalan baru hari ini. MasyaAllah!"}
             </p>
             <div className="mt-5 hidden items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-xs text-white/80 backdrop-blur-md sm:inline-flex">
               <BookOpenCheck size={16} className="shrink-0 text-cyan-200" />
@@ -69,7 +69,7 @@ export async function DashboardHome() {
           </div>
           <div className="max-w-[58%] sm:max-w-none">
             <WorkspaceLink panel="submissions" className="inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-teal-800 shadow-xl shadow-teal-950/10 transition duration-150 hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25 active:translate-y-0 active:scale-[0.98]">
-              Mulai Setoran <ArrowRight size={17} />
+              Input Hafalan Baru <ArrowRight size={17} />
             </WorkspaceLink>
           </div>
         </div>
@@ -90,7 +90,7 @@ export async function DashboardHome() {
       <section className="grid gap-5 xl:grid-cols-[1.2fr_.8fr]">
         <Card className="p-5 sm:p-6">
           <div className="flex items-center justify-between gap-4">
-            <div><p className="label">Aktivitas</p><h2 className="mt-1 text-lg font-extrabold">Setoran Hari Ini</h2></div>
+            <div><p className="label">Aktivitas</p><h2 className="mt-1 text-lg font-extrabold">Hafalan Baru Hari Ini</h2></div>
             <div className="text-right"><div className="text-2xl font-extrabold text-teal-800">{progress}%</div><div className="text-[10px] text-muted">selesai</div></div>
           </div>
           <Progress value={progress} className="mt-5 h-3" />
@@ -100,7 +100,7 @@ export async function DashboardHome() {
             <Mini value={data.izin} label="Izin" />
             <Mini value={data.sakit} label="Sakit" />
           </div>
-          <WorkspaceLink panel="submissions" className="mt-5 inline-flex min-h-10 touch-manipulation items-center gap-2 text-sm font-bold text-teal-700 transition hover:text-teal-900 active:scale-[0.98]">Lihat daftar setoran <ArrowRight size={15} /></WorkspaceLink>
+          <WorkspaceLink panel="submissions" className="mt-5 inline-flex min-h-10 touch-manipulation items-center gap-2 text-sm font-bold text-teal-700 transition hover:text-teal-900 active:scale-[0.98]">Buka Hafalan Baru <ArrowRight size={15} /></WorkspaceLink>
         </Card>
 
         <div id="attention" className="scroll-mt-24">
