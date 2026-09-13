@@ -45,16 +45,16 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col bg-white p-4">
       <div className="mb-7 flex items-center gap-3 px-2 pt-2">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-teal-800 to-teal-500 text-white shadow-soft">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-teal-800 to-teal-500 text-white shadow-soft">
           <BookOpenCheck size={21} />
         </div>
-        <div>
-          <div className="text-[15px] font-extrabold tracking-tight">Tahfidz with Hulwah</div>
-          <div className="text-[10px] font-medium text-muted">Personal Tahfidz Dashboard</div>
+        <div className="min-w-0">
+          <div className="truncate text-[15px] font-extrabold tracking-tight">Tahfidz with Hulwah</div>
+          <div className="truncate text-[10px] font-medium text-muted">Personal Tahfidz Dashboard</div>
         </div>
       </div>
 
-      <nav className="space-y-1 overflow-y-auto pb-6">
+      <nav className="space-y-1 overflow-y-auto overscroll-contain pb-6">
         {nav.map((item, i) =>
           "section" in item ? (
             <div
@@ -75,7 +75,7 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                   href={item.href}
                   onClick={onNavigate}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+                    "flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-teal-100",
                     active
                       ? "bg-teal-50 text-teal-800"
                       : "text-slate-600 hover:bg-slate-50 hover:text-ink",
@@ -114,23 +114,24 @@ export function DashboardShell({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-canvas md:grid md:grid-cols-[258px_1fr]">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[258px] border-r border-line md:block">
+    <div className="min-h-screen bg-canvas lg:grid lg:grid-cols-[258px_1fr]">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[258px] border-r border-line lg:block">
         <Sidebar />
       </aside>
 
       {open && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           <button
             aria-label="Tutup menu"
-            className="absolute inset-0 bg-slate-950/30 backdrop-blur-sm"
+            className="absolute inset-0 bg-slate-950/35 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <aside className="relative h-full w-[286px] border-r border-line shadow-2xl">
+          <aside className="relative h-full w-[min(286px,88vw)] border-r border-line bg-white shadow-2xl">
             <div className="absolute right-3 top-3 z-10">
               <button
+                aria-label="Tutup menu"
                 onClick={() => setOpen(false)}
-                className="grid h-9 w-9 place-items-center rounded-xl bg-slate-100"
+                className="grid h-9 w-9 place-items-center rounded-xl bg-slate-100 text-slate-600 transition hover:bg-slate-200 focus:outline-none focus:ring-4 focus:ring-teal-100"
               >
                 <X size={18} />
               </button>
@@ -140,40 +141,48 @@ export function DashboardShell({
         </div>
       )}
 
-      <div className="min-w-0 md:col-start-2">
-        <header className="sticky top-0 z-30 flex h-[70px] items-center gap-3 border-b border-line/80 bg-white/90 px-4 backdrop-blur-xl md:px-7">
+      <div className="min-w-0 lg:col-start-2">
+        <header className="sticky top-0 z-30 flex h-[66px] items-center gap-2 border-b border-line/80 bg-white/92 px-3 backdrop-blur-xl sm:h-[70px] sm:gap-3 sm:px-5 lg:px-7">
           <button
-            className="grid h-10 w-10 place-items-center rounded-xl border border-line md:hidden"
+            aria-label="Buka menu"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-white text-slate-600 transition hover:bg-teal-50 hover:text-teal-800 focus:outline-none focus:ring-4 focus:ring-teal-100 lg:hidden"
             onClick={() => setOpen(true)}
           >
             <Menu size={19} />
           </button>
 
-          <div className="relative hidden max-w-md flex-1 md:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
-            <input
-              className="h-10 w-full rounded-xl border border-line bg-slate-50 pl-10 pr-4 text-sm outline-none focus:border-teal-300 focus:bg-white"
-              placeholder="Cari siswa..."
-            />
-          </div>
+          <Link
+            href="/students"
+            className="relative hidden max-w-md flex-1 items-center rounded-xl border border-line bg-slate-50 px-3 py-2.5 text-sm text-slate-400 transition hover:border-teal-200 hover:bg-white hover:text-slate-600 focus:outline-none focus:ring-4 focus:ring-teal-100 sm:flex lg:max-w-lg"
+          >
+            <Search className="mr-2 shrink-0" size={17} />
+            <span className="truncate">Cari siswa binaan...</span>
+            <span className="ml-auto hidden rounded-md border border-line bg-white px-1.5 py-0.5 text-[9px] font-bold text-slate-400 xl:inline">SISWA</span>
+          </Link>
 
-          <div className="ml-auto flex items-center gap-2">
-            <button className="grid h-10 w-10 place-items-center rounded-xl border border-line bg-white text-slate-500">
+          <div className="ml-auto flex min-w-0 items-center gap-2">
+            <Link
+              href="/dashboard#attention"
+              aria-label="Lihat prioritas pembinaan"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-white text-slate-500 transition hover:bg-amber-50 hover:text-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-100"
+            >
               <Bell size={18} />
-            </button>
-            <div className="flex items-center gap-2 rounded-xl border border-line bg-white py-1.5 pl-1.5 pr-3">
+            </Link>
+            <div className="flex min-w-0 items-center gap-2 rounded-xl border border-line bg-white py-1.5 pl-1.5 pr-2 sm:pr-3">
               {teacherAvatarUrl ? (
                 <img
                   src={teacherAvatarUrl}
                   alt={teacherName}
-                  className="h-8 w-8 rounded-lg object-cover"
+                  loading="eager"
+                  decoding="async"
+                  className="h-8 w-8 shrink-0 rounded-lg bg-teal-50 object-cover"
                 />
               ) : (
-                <div className="grid h-8 w-8 place-items-center rounded-lg bg-teal-100 text-xs font-extrabold text-teal-800">
+                <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-teal-100 text-xs font-extrabold text-teal-800">
                   H
                 </div>
               )}
-              <div className="hidden sm:block">
+              <div className="hidden min-w-0 sm:block">
                 <div className="max-w-[150px] truncate text-xs font-bold">{teacherName}</div>
                 <div className="text-[10px] text-muted">Guru Tahfidz</div>
               </div>
@@ -181,7 +190,7 @@ export function DashboardShell({
           </div>
         </header>
 
-        <main className="p-4 md:p-7 lg:p-8">{children}</main>
+        <main className="p-3 sm:p-5 md:p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );
