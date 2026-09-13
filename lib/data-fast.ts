@@ -1,24 +1,38 @@
-import { createClient } from "@/lib/supabase/server";
-import { isDemoMode, isSupabaseConfigured } from "@/lib/supabase/config";
-import { demoDashboard, demoStudents } from "@/lib/demo";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { isDemoMode, isSupabaseConfigured, supabasePublishableKey, supabaseUrl } from "@/lib/supabase/config";
+import { demoClassTargets, demoDashboard, demoStudents } from "@/lib/demo";
 import { getAttendanceForDate, getDashboardData, getSubmissionQueue, getStudentOverviews } from "@/lib/data";
-import type { AttendanceStatus, DashboardData, StudentOverview } from "@/lib/types";
+import type { AttendanceStatus, ClassTarget, DashboardData, StudentOverview } from "@/lib/types";
+
+const fastClient = isSupabaseConfigured
+  ? createSupabaseClient(supabaseUrl, supabasePublishableKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+      },
+    })
+  : null;
 
 export async function getDashboardDataFast(): Promise<DashboardData> {
-  if (!isSupabaseConfigured || isDemoMode) return demoDashboard;
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("hulwah_dashboard_snapshot");
-  if (error || !data) return getDashboardData();
+  if (!fastClient || isDemoMode) return demoDashboard;
+  const { data, error } = await fastClient.rpc("hulwah_dashboard_snapshot");
+  if (error || !data) {
+    console.error("hulwah_dashboard_snapshot failed", error?.message);
+    return getDashboardData();
+  }
   return data as DashboardData;
 }
 
 export async function getAttendanceForDateFast(day: string) {
-  if (!isSupabaseConfigured || isDemoMode) {
+  if (!fastClient || isDemoMode) {
     return { students: demoStudents, statuses: {} as Record<string, AttendanceStatus> };
   }
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("hulwah_attendance_snapshot", { p_day: day });
-  if (error || !data) return getAttendanceForDate(day);
+  const { data, error } = await fastClient.rpc("hulwah_attendance_snapshot", { p_day: day });
+  if (error || !data) {
+    console.error("hulwah_attendance_snapshot failed", error?.message);
+    return getAttendanceForDate(day);
+  }
   const payload = data as { students?: typeof demoStudents; statuses?: Record<string, AttendanceStatus> };
   return {
     students: payload.students ?? [],
@@ -27,15 +41,17 @@ export async function getAttendanceForDateFast(day: string) {
 }
 
 export async function getStudentOverviewsFast(): Promise<StudentOverview[]> {
-  if (!isSupabaseConfigured || isDemoMode) return demoStudents;
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("hulwah_student_overviews_snapshot");
-  if (error || !data) return getStudentOverviews();
+  if (!fastClient || isDemoMode) return demoStudents;
+  const { data, error } = await fastClient.rpc("hulwah_student_overviews_snapshot");
+  if (error || !data) {
+    console.error("hulwah_student_overviews_snapshot failed", error?.message);
+    return getStudentOverviews();
+  }
   return data as StudentOverview[];
 }
 
 export async function getSubmissionQueueFast(day: string) {
-  if (!isSupabaseConfigured || isDemoMode) {
+  if (!fastClient || isDemoMode) {
     return demoStudents.map((student) => ({
       ...student,
       present: false,
@@ -44,9 +60,11 @@ export async function getSubmissionQueueFast(day: string) {
       focus: (student as any).focus ?? null,
     }));
   }
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("hulwah_submission_queue_snapshot", { p_day: day });
-  if (error || !data) return getSubmissionQueue(day);
+  const { data, error } = await fastClient.rpc("hulwah_submission_queue_snapshot", { p_day: day });
+  if (error || !data) {
+    console.error("hulwah_submission_queue_snapshot failed", error?.message);
+    return getSubmissionQueue(day);
+  }
   return data as Array<{
     id: string;
     full_name: string;
@@ -58,4 +76,26 @@ export async function getSubmissionQueueFast(day: string) {
     lastMemorization: string;
     focus?: string | null;
   }>;
+}
+
+export async function getClassTargetsFast(): Promise<ClassTarget[]> {
+  if (!fastClient || isDemoMode) return demoClassTargets;
+  const { data, error } = await fastClient
+    .from("class_targets")
+    .select("id,class_name,segment_no,start_label,end_label")
+    .order("class_name", { ascending: true })
+    .order("segment_no", { ascending: true });
+
+  if (error) {
+    console.error("class target fast read failed", error.message);
+    return demoClassTargets;
+  }
+
+  return (data ?? []).map((row) => ({
+    id: row.id,
+    className: row.class_name,
+    segmentNo: row.segment_no,
+    startLabel: row.start_label,
+    endLabel: row.end_label,
+  }));
 }
