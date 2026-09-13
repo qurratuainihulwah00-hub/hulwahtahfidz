@@ -5,12 +5,12 @@ import { createClient } from "@/lib/supabase/server";
 import { isDemoMode, isSupabaseConfigured } from "@/lib/supabase/config";
 import type { AttendanceStatus, NoteVisibility, SubmissionType } from "@/lib/types";
 
+const HULWAH_WORKSPACE_ID = "31a9adbd-b5bf-4e14-ac56-d73d605363a5";
+
 async function context() {
   if (!isSupabaseConfigured || isDemoMode) return { supabase: null, teacherId: "demo" };
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("Workspace Tahfidz tidak ditemukan.");
-  return { supabase, teacherId: user.id };
+  return { supabase, teacherId: HULWAH_WORKSPACE_ID };
 }
 
 async function ownsStudent(supabase: any, teacherId: string, studentId: string) {
