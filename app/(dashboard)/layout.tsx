@@ -1,5 +1,8 @@
 import { DashboardShell } from "@/components/dashboard-shell";
 
+export const dynamic = "force-dynamic";
+export const preferredRegion = "sin1";
+
 const TEACHER_NAME = "Hulwah Qurratu Aini, S.Pd.";
 const TEACHER_AVATAR = "/hulwah-avatar-pro.webp";
 
