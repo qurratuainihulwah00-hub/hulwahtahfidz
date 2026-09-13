@@ -32,7 +32,7 @@ const nav = [
   { label: "Dashboard", href: "/dashboard", panel: "dashboard" as WorkspacePanel, icon: LayoutDashboard },
   { section: "Aktivitas" },
   { label: "Absensi", href: "/attendance", panel: "attendance" as WorkspacePanel, icon: CalendarCheck2 },
-  { label: "Setoran Hafalan", href: "/submissions", panel: "submissions" as WorkspacePanel, icon: ClipboardCheck },
+  { label: "Hafalan Baru", href: "/submissions", panel: "submissions" as WorkspacePanel, icon: ClipboardCheck },
   { label: "Murajaah", href: "/murajaah", panel: "murajaah" as WorkspacePanel, icon: BookHeart },
   { section: "Siswa" },
   { label: "Siswa Binaan", href: "/students", panel: "students" as WorkspacePanel, icon: Users },
