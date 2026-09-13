@@ -37,7 +37,7 @@ export default async function ProgressPage() {
               <div className="mt-4 space-y-2">
                 {classTargets.sort((a, b) => a.segmentNo - b.segmentNo).map((target) => (
                   <div key={target.id} className="rounded-xl border border-line bg-slate-50 p-3">
-                    <div className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Target {target.segmentNoM</div>
+                    <div className="text-[10px] font-extrabold uppercase tracking-wider text-teal-700">Target {target.segmentNo}</div>
                     <div className="mt-1 text-sm font-bold">{target.startLabel} <span className="text-muted">→</span> {target.endLabel}</div>
                   </div>
                 ))}
