@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { ArrowRight, BookOpenCheck, Minus, TrendingDown, TrendingUp } from "lucide-react";
 import { Card, Progress, Badge } from "@/components/ui";
-import { getClassTargets } from "@/lib/data";
-import { getStudentOverviewsFast } from "@/lib/data-fast";
+import { getClassTargetsFast, getStudentOverviewsFast } from "@/lib/data-fast";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 15;
 
 export default async function ProgressPage() {
-  const [rows, targets] = await Promise.all([getStudentOverviewsFast(), getClassTargets()]);
+  const [rows, targets] = await Promise.all([getStudentOverviewsFast(), getClassTargetsFast()]);
   const grouped = targets.reduce<Record<string, typeof targets>>((acc, target) => {
     (acc[target.className] ??= []).push(target);
     return acc;
