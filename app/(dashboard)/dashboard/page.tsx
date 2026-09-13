@@ -53,12 +53,12 @@ export default async function DashboardPage() {
                   ? `${data.waiting} siswa masih menunggu setoran.`
                   : "Semua siswa hadir sudah menyelesaikan setoran. MasyaAllah!"}
             </p>
-            <div className="mt-5 inline-flex max-w-[calc(100%-120px)] items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2.5 text-[11px] text-white/80 backdrop-blur-md sm:max-w-full sm:px-4 sm:py-3 sm:text-xs">
+            <div className="mt-5 inline-flex max-w-[calc(100%_-_120px)] items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2.5 text-[11px] text-white/80 backdrop-blur-md sm:max-w-full sm:px-4 sm:py-3 sm:text-xs">
               <BookOpenCheck size={16} className="shrink-0 text-cyan-200" />
               <span className="truncate sm:whitespace-normal">Personal Tahfidz Dashboard • Hulwah Qurratu Aini, S.Pd.</span>
             </div>
           </div>
-          <div className="max-w-[calc(100%-130px)] sm:max-w-none">
+          <div className="max-w-[calc(100%_-_130px)] sm:max-w-none">
             <Link
               href="/submissions"
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-teal-800 shadow-xl shadow-teal-950/10 transition hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25"
