@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -9,6 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import { Card, Progress } from "@/components/ui";
+import { WorkspaceLink } from "@/components/workspace-link";
 import { getDashboardDataFast } from "@/lib/data-fast";
 import { pct } from "@/lib/utils";
 
@@ -32,12 +34,14 @@ export async function DashboardHome() {
         <div className="pointer-events-none absolute inset-y-0 right-0 w-[48%] bg-gradient-to-l from-cyan-100/14 via-teal-500/5 to-transparent sm:w-[42%]" />
         <div className="pointer-events-none absolute bottom-0 right-0 z-[1] h-[245px] w-[158px] overflow-hidden sm:inset-y-0 sm:h-auto sm:w-[40%] md:w-[38%]">
           <div className="absolute inset-0 bg-gradient-to-l from-cyan-100/12 via-transparent to-transparent" />
-          <img
+          <Image
             src="/hulwah-portrait-pro.webp"
             alt="Hulwah Qurratu Aini, S.Pd."
-            loading="eager"
-            decoding="async"
-            className="absolute left-1/2 top-0 h-[315px] w-auto max-w-none -translate-x-1/2 object-contain drop-shadow-[0_22px_30px_rgba(4,47,46,0.28)] sm:top-[-34px] sm:h-[500px] md:top-[-52px] md:h-[540px]"
+            width={360}
+            height={420}
+            priority
+            sizes="(max-width: 639px) 270px, (max-width: 1023px) 420px, 480px"
+            className="absolute left-1/2 top-0 h-[315px] w-auto max-w-none -translate-x-1/2 select-none object-contain drop-shadow-[0_22px_30px_rgba(4,47,46,0.28)] sm:top-[-34px] sm:h-[500px] md:top-[-52px] md:h-[540px]"
           />
         </div>
         <div className="pointer-events-none absolute inset-y-0 right-[34%] z-[2] hidden w-24 bg-gradient-to-r from-teal-800/20 to-transparent sm:block" />
@@ -64,9 +68,9 @@ export async function DashboardHome() {
             </div>
           </div>
           <div className="max-w-[58%] sm:max-w-none">
-            <Link href="/submissions" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-teal-800 shadow-xl shadow-teal-950/10 transition duration-150 hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25 active:translate-y-0">
+            <WorkspaceLink panel="submissions" className="inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-teal-800 shadow-xl shadow-teal-950/10 transition duration-150 hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25 active:translate-y-0 active:scale-[0.98]">
               Mulai Setoran <ArrowRight size={17} />
-            </Link>
+            </WorkspaceLink>
           </div>
         </div>
       </Card>
@@ -96,7 +100,7 @@ export async function DashboardHome() {
             <Mini value={data.izin} label="Izin" />
             <Mini value={data.sakit} label="Sakit" />
           </div>
-          <Link href="/submissions" className="mt-5 inline-flex min-h-10 items-center gap-2 text-sm font-bold text-teal-700 transition hover:text-teal-900">Lihat daftar setoran <ArrowRight size={15} /></Link>
+          <WorkspaceLink panel="submissions" className="mt-5 inline-flex min-h-10 touch-manipulation items-center gap-2 text-sm font-bold text-teal-700 transition hover:text-teal-900 active:scale-[0.98]">Lihat daftar setoran <ArrowRight size={15} /></WorkspaceLink>
         </Card>
 
         <div id="attention" className="scroll-mt-24">
@@ -107,7 +111,7 @@ export async function DashboardHome() {
             </div>
             <div className="mt-4 space-y-3">
               {data.attention.length ? data.attention.slice(0, 4).map((item) => (
-                <Link href={`/students/${item.studentId}`} key={item.id} className="block rounded-xl border border-line p-3 transition hover:border-teal-200 hover:bg-teal-50">
+                <Link href={`/students/${item.studentId}`} prefetch key={item.id} className="block touch-manipulation rounded-xl border border-line p-3 transition hover:border-teal-200 hover:bg-teal-50 active:scale-[0.99]">
                   <div className="flex items-center justify-between gap-3">
                     <div className="min-w-0"><p className="truncate text-sm font-bold">{item.studentName} <span className="font-medium text-muted">• {item.className}</span></p><p className="mt-1 text-xs leading-5 text-muted">{item.text}</p></div>
                     <ArrowRight className="shrink-0 text-slate-300" size={16} />
@@ -122,7 +126,7 @@ export async function DashboardHome() {
       <section>
         <div className="mb-3 flex items-end justify-between gap-3">
           <div><p className="label">Kelompok</p><h2 className="mt-1 text-lg font-extrabold">Kelas Binaan Saya</h2></div>
-          <Link href="/students" className="shrink-0 text-xs font-bold text-teal-700 hover:text-teal-900">Lihat siswa</Link>
+          <WorkspaceLink panel="students" className="shrink-0 touch-manipulation text-xs font-bold text-teal-700 transition hover:text-teal-900 active:scale-[0.98]">Lihat siswa</WorkspaceLink>
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {data.classes.map((classRow) => (
