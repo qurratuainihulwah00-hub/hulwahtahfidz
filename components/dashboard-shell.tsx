@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BarChart3,
   Bell,
@@ -59,7 +58,7 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     }
     stageWorkspacePanel(next);
     onNavigate?.();
-    router.push("/dashboard");
+    router.push("/dashboard", { scroll: false });
   }
 
   return (
@@ -95,7 +94,7 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
               type="button"
               onClick={() => choose(item.panel)}
               className={cn(
-                "flex min-h-11 w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-teal-100",
+                "flex min-h-11 w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition focus:outline-none focus:ring-4 focus:ring-teal-100 active:scale-[0.99]",
                 active ? "bg-teal-50 text-teal-800" : "text-slate-600 hover:bg-slate-50 hover:text-ink",
               )}
             >
@@ -129,13 +128,17 @@ function DashboardShellInner({
   const router = useRouter();
   const { setPanel } = useWorkspace();
 
+  useEffect(() => {
+    if (pathname !== "/dashboard") router.prefetch("/dashboard");
+  }, [pathname, router]);
+
   function openPanel(panel: WorkspacePanel) {
     if (pathname === "/dashboard") {
       setPanel(panel);
       return;
     }
     stageWorkspacePanel(panel);
-    router.push("/dashboard");
+    router.push("/dashboard", { scroll: false });
   }
 
   return (
@@ -149,7 +152,7 @@ function DashboardShellInner({
           <button aria-label="Tutup menu" className="absolute inset-0 bg-slate-950/35 backdrop-blur-sm" onClick={() => setOpen(false)} />
           <aside className="relative h-full w-[min(286px,88vw)] border-r border-line bg-white shadow-2xl">
             <div className="absolute right-3 top-3 z-10">
-              <button aria-label="Tutup menu" onClick={() => setOpen(false)} className="grid h-9 w-9 place-items-center rounded-xl bg-slate-100 text-slate-600 transition hover:bg-slate-200 focus:outline-none focus:ring-4 focus:ring-teal-100">
+              <button aria-label="Tutup menu" onClick={() => setOpen(false)} className="grid h-9 w-9 place-items-center rounded-xl bg-slate-100 text-slate-600 transition hover:bg-slate-200 focus:outline-none focus:ring-4 focus:ring-teal-100 active:scale-95">
                 <X size={18} />
               </button>
             </div>
@@ -160,14 +163,14 @@ function DashboardShellInner({
 
       <div className="min-w-0 lg:col-start-2">
         <header className="sticky top-0 z-30 flex h-[66px] items-center gap-2 border-b border-line/80 bg-white/92 px-3 backdrop-blur-xl sm:h-[70px] sm:gap-3 sm:px-5 lg:px-7">
-          <button aria-label="Buka menu" className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-white text-slate-600 transition hover:bg-teal-50 hover:text-teal-800 focus:outline-none focus:ring-4 focus:ring-teal-100 lg:hidden" onClick={() => setOpen(true)}>
+          <button aria-label="Buka menu" className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-white text-slate-600 transition hover:bg-teal-50 hover:text-teal-800 focus:outline-none focus:ring-4 focus:ring-teal-100 active:scale-95 lg:hidden" onClick={() => setOpen(true)}>
             <Menu size={19} />
           </button>
 
           <button
             type="button"
             onClick={() => openPanel("students")}
-            className="relative hidden max-w-md flex-1 items-center rounded-xl border border-line bg-slate-50 px-3 py-2.5 text-sm text-slate-400 transition hover:border-teal-200 hover:bg-white hover:text-slate-600 focus:outline-none focus:ring-4 focus:ring-teal-100 sm:flex lg:max-w-lg"
+            className="relative hidden max-w-md flex-1 items-center rounded-xl border border-line bg-slate-50 px-3 py-2.5 text-sm text-slate-400 transition hover:border-teal-200 hover:bg-white hover:text-slate-600 focus:outline-none focus:ring-4 focus:ring-teal-100 active:scale-[0.995] sm:flex lg:max-w-lg"
           >
             <Search className="mr-2 shrink-0" size={17} />
             <span className="truncate">Cari siswa binaan...</span>
@@ -175,12 +178,21 @@ function DashboardShellInner({
           </button>
 
           <div className="ml-auto flex min-w-0 items-center gap-2">
-            <button type="button" onClick={() => openPanel("dashboard")} aria-label="Lihat prioritas pembinaan" className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-white text-slate-500 transition hover:bg-amber-50 hover:text-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-100">
+            <button type="button" onClick={() => openPanel("dashboard")} aria-label="Lihat prioritas pembinaan" className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-white text-slate-500 transition hover:bg-amber-50 hover:text-amber-600 focus:outline-none focus:ring-4 focus:ring-amber-100 active:scale-95">
               <Bell size={18} />
             </button>
             <div className="flex min-w-0 items-center gap-2 rounded-xl border border-line bg-white py-1.5 pl-1.5 pr-2 sm:pr-3">
               {teacherAvatarUrl ? (
-                <img src={teacherAvatarUrl} alt={teacherName} loading="eager" decoding="async" className="h-8 w-8 shrink-0 rounded-lg bg-teal-50 object-cover" />
+                <img
+                  src={teacherAvatarUrl}
+                  alt={teacherName}
+                  width={32}
+                  height={32}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="h-8 w-8 shrink-0 rounded-lg bg-teal-50 object-cover object-top ring-1 ring-teal-100"
+                />
               ) : (
                 <div className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-teal-100 text-xs font-extrabold text-teal-800">H</div>
               )}
