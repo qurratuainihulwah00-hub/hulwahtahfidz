@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { SubmissionBoard } from "@/components/submission-board";
 import { getSubmissionQueueFast } from "@/lib/data-fast";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 15;
 
 export default async function SubmissionsPage() {
   const day = format(new Date(), "yyyy-MM-dd");
