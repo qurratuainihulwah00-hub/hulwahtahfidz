@@ -11,6 +11,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { Card } from "@/components/ui";
+import { SettingsDataCenter } from "@/components/settings-data-center";
 import { createClient } from "@/lib/supabase/client";
 
 const SESSION_KEY = "hulwah-settings-session";
@@ -18,6 +19,7 @@ const SESSION_KEY = "hulwah-settings-session";
 export default function SettingsPage() {
   const [pin, setPin] = useState("");
   const [unlocked, setUnlocked] = useState(false);
+  const [sessionToken, setSessionToken] = useState("");
   const [checking, setChecking] = useState(true);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -39,6 +41,7 @@ export default function SettingsPage() {
 
       if (!active) return;
       if (!error && data === true) {
+        setSessionToken(token);
         setUnlocked(true);
       } else {
         window.sessionStorage.removeItem(SESSION_KEY);
@@ -74,7 +77,9 @@ export default function SettingsPage() {
       return;
     }
 
-    window.sessionStorage.setItem(SESSION_KEY, String(data));
+    const token = String(data);
+    window.sessionStorage.setItem(SESSION_KEY, token);
+    setSessionToken(token);
     setPin("");
     setUnlocked(true);
   }
@@ -82,6 +87,7 @@ export default function SettingsPage() {
   async function lockNow() {
     const token = window.sessionStorage.getItem(SESSION_KEY);
     window.sessionStorage.removeItem(SESSION_KEY);
+    setSessionToken("");
     setUnlocked(false);
     setMessage("");
 
@@ -104,7 +110,7 @@ export default function SettingsPage() {
     );
   }
 
-  if (!unlocked) {
+  if (!unlocked || !sessionToken) {
     return (
       <div className="mx-auto max-w-xl py-6 md:py-14">
         <div className="mb-6 text-center">
@@ -114,7 +120,7 @@ export default function SettingsPage() {
           <p className="label">Area Privat</p>
           <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Pengaturan</h1>
           <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted">
-            Dashboard utama tetap langsung terbuka. PIN hanya diminta saat masuk ke pengaturan.
+            Dashboard utama tetap langsung terbuka. PIN hanya diminta saat masuk ke pengaturan dan Data Center.
           </p>
         </div>
 
@@ -174,12 +180,12 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-5">
+    <div className="mx-auto max-w-6xl space-y-5">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="label">Area Privat</p>
           <h1 className="mt-1 text-2xl font-extrabold tracking-tight">Pengaturan</h1>
-          <p className="mt-1 text-sm text-muted">Pengaturan pribadi Tahfidz with Hulwah.</p>
+          <p className="mt-1 text-sm text-muted">Pengaturan pribadi dan pusat pengelolaan data Tahfidz with Hulwah.</p>
         </div>
         <button type="button" onClick={lockNow} className="button-secondary">
           <LockKeyhole size={16} /> Kunci Sekarang
@@ -194,7 +200,7 @@ export default function SettingsPage() {
           <div>
             <div className="font-extrabold text-teal-950">Pengaturan berhasil dibuka</div>
             <p className="mt-1 text-xs leading-5 text-teal-800/75">
-              Sesi pengaturan berlaku maksimal 30 menit pada tab ini. Dashboard dan aktivitas harian tidak memerlukan PIN.
+              Sesi pengaturan berlaku maksimal 30 menit pada tab ini. Perubahan Data Center langsung tersimpan ke Supabase.
             </p>
           </div>
         </div>
@@ -214,9 +220,7 @@ export default function SettingsPage() {
           <div className="mt-5 rounded-2xl border border-line bg-slate-50/70 p-4">
             <div className="text-sm font-extrabold">Hulwah Qurratu Aini, S.Pd.</div>
             <div className="mt-1 text-xs font-semibold text-teal-700">Guru Tahfidz</div>
-            <p className="mt-3 text-xs leading-5 text-muted">
-              Foto profil Ustadzah akan menggunakan foto yang sudah Anda kirim dan akan diblend halus dengan tema dashboard.
-            </p>
+            <p className="mt-3 text-xs leading-5 text-muted">Nama dan avatar dapat dikoreksi dari tab Profil pada Data Center.</p>
           </div>
         </Card>
 
@@ -226,15 +230,13 @@ export default function SettingsPage() {
               <Target size={21} />
             </div>
             <div>
-              <div className="font-extrabold">Target Kelas</div>
-              <div className="text-xs text-muted">3 kelas binaan aktif</div>
+              <div className="font-extrabold">Target & Semester</div>
+              <div className="text-xs text-muted">Sekarang bisa diedit langsung</div>
             </div>
           </div>
-          <div className="mt-5 space-y-2 text-xs">
-            <div className="rounded-xl bg-slate-50 px-3 py-2.5 font-semibold">1 Ar Rahman · An-Naba → An-Nas</div>
-            <div className="rounded-xl bg-slate-50 px-3 py-2.5 font-semibold">2 An Nur · Al-Mulk → Al-Baqarah:29</div>
-            <div className="rounded-xl bg-slate-50 px-3 py-2.5 font-semibold">3 Az Zukhruf · Al-Baqarah:30 → 190</div>
-          </div>
+          <p className="mt-4 text-xs leading-5 text-muted">
+            Target tiap kelas dan rentang tanggal semester bisa ditambah, diubah, atau dihapus tanpa mengedit kode aplikasi.
+          </p>
         </Card>
 
         <Card className="p-5">
@@ -248,7 +250,7 @@ export default function SettingsPage() {
             </div>
           </div>
           <p className="mt-4 text-xs leading-5 text-muted">
-            Absensi, setoran, murajaah, siswa, perkembangan, dan laporan dapat dibuka langsung tanpa halaman login.
+            Absensi, setoran, murajaah, siswa, perkembangan, dan laporan tetap dapat dibuka langsung tanpa login.
           </p>
         </Card>
 
@@ -259,14 +261,16 @@ export default function SettingsPage() {
             </div>
             <div>
               <div className="font-extrabold">Keamanan PIN</div>
-              <div className="text-xs text-muted">PIN tidak disimpan di frontend</div>
+              <div className="text-xs text-muted">Aksi Data Center ikut dilindungi token PIN</div>
             </div>
           </div>
           <p className="mt-4 text-xs leading-5 text-muted">
-            Verifikasi PIN dilakukan di database menggunakan hash. Nilai PIN asli tidak dicantumkan di repository publik.
+            Tambah, ubah, dan hapus dari Data Center hanya dapat dilakukan selama sesi Pengaturan masih valid.
           </p>
         </Card>
       </div>
+
+      <SettingsDataCenter token={sessionToken} />
 
       <div className="flex items-center gap-2 px-1 text-[11px] text-muted">
         <Settings2 size={14} /> Track • Guide • Grow
