@@ -29,8 +29,19 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
   const [panel, setPanelState] = useState<WorkspacePanel>("dashboard");
 
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const requested = url.searchParams.get("panel");
     const saved = window.sessionStorage.getItem(STORAGE_KEY);
-    if (isWorkspacePanel(saved)) setPanelState(saved);
+    const initial = isWorkspacePanel(requested) ? requested : isWorkspacePanel(saved) ? saved : "dashboard";
+
+    setPanelState(initial);
+    window.sessionStorage.setItem(STORAGE_KEY, initial);
+
+    if (requested && window.location.pathname === "/dashboard") {
+      url.searchParams.delete("panel");
+      const cleanSearch = url.searchParams.toString();
+      window.history.replaceState(window.history.state, "", `/dashboard${cleanSearch ? `?${cleanSearch}` : ""}${url.hash}`);
+    }
 
     const handle = (event: Event) => {
       const detail = (event as CustomEvent<WorkspacePanel>).detail;
