@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 
 const PORTRAITS = [
   "/hulwah-portrait-pro.webp",
-  "/hulwah-portrait-source.webp",
-  "/hulwah-reference.jpg",
+  "/hulwah-hero.webp",
+  "/hulwah-avatar-pro.webp",
 ] as const;
 
 export function TeacherPortrait({ className }: { className?: string }) {
