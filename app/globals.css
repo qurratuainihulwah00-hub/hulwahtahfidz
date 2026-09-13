@@ -7,13 +7,24 @@
 html { background: #F5F8F9; }
 body { margin: 0; color: #14252C; background: #F5F8F9; }
 button, input, textarea, select { font: inherit; }
+a, button { -webkit-tap-highlight-color: transparent; }
+button, [role="button"] { touch-action: manipulation; }
 ::selection { background: #B9DDE6; color: #063F55; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 @layer components {
   .card { @apply rounded-[18px] border border-line bg-white shadow-soft; }
   .label { @apply text-xs font-semibold uppercase tracking-[0.12em] text-muted; }
   .input { @apply h-11 w-full rounded-xl border border-line bg-white px-3 text-sm outline-none transition focus:border-teal-400 focus:ring-4 focus:ring-teal-100; }
   .textarea { @apply min-h-24 w-full rounded-xl border border-line bg-white p-3 text-sm outline-none transition focus:border-teal-400 focus:ring-4 focus:ring-teal-100; }
-  .button-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60; }
-  .button-secondary { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-teal-50; }
+  .button-primary { @apply inline-flex touch-manipulation items-center justify-center gap-2 rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60; }
+  .button-secondary { @apply inline-flex touch-manipulation items-center justify-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-teal-50 active:scale-[0.98]; }
 }
