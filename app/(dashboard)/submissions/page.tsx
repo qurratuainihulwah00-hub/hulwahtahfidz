@@ -14,13 +14,13 @@ export default async function SubmissionsPage() {
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
           <p className="label">Aktivitas Harian</p>
-          <h1 className="mt-1 text-2xl font-extrabold">Setoran Hafalan</h1>
+          <h1 className="mt-1 text-2xl font-extrabold">Hafalan Baru</h1>
           <p className="mt-1 text-sm text-muted">
-            {present.length} siswa hadir · {present.filter((row) => row.submitted).length} sudah setor · {present.filter((row) => !row.submitted).length} menunggu.
+            Input khusus setoran hafalan baru. {present.length} siswa hadir · {present.filter((row) => row.submitted).length} sudah setor · {present.filter((row) => !row.submitted).length} menunggu.
           </p>
         </div>
       </div>
-      <SubmissionBoard rows={rows} date={day} />
+      <SubmissionBoard rows={rows} date={day} mode="hafalan_baru" />
     </div>
   );
 }
