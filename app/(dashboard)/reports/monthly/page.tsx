@@ -1,0 +1,5 @@
+import { format } from "date-fns";
+import { ReportTable } from "@/components/report-table";
+import { getReportRows } from "@/lib/data";
+export const dynamic="force-dynamic";
+export default async function MonthlyReportPage({searchParams}:{searchParams:Promise<{period?:string}>}){const sp=await searchParams;const period=sp.period??format(new Date(),"yyyy-MM");const rows=await getReportRows("monthly",period);return <div className="mx-auto max-w-7xl space-y-5"><div><p className="label">Evaluasi Berkala</p><h1 className="mt-1 text-2xl font-extrabold">Laporan Bulanan</h1><p className="mt-1 text-sm text-muted">PDF individual siswa + Excel rekap seluruh siswa binaan dalam kelas yang dipilih.</p></div><form className="card flex flex-wrap items-end gap-3 p-4"><div><label className="mb-1.5 block text-xs font-bold">Bulan</label><input name="period" type="month" defaultValue={period} className="input w-auto"/></div><button className="button-secondary">Tampilkan</button></form><ReportTable rows={rows} title="Laporan Perkembangan Tahfidz Bulanan" period={period}/></div>}
