@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -10,6 +9,7 @@ import {
   Users,
 } from "lucide-react";
 import { Card, Progress } from "@/components/ui";
+import { TeacherPortrait } from "@/components/teacher-portrait";
 import { WorkspaceLink } from "@/components/workspace-link";
 import { getDashboardDataFast } from "@/lib/data-fast";
 import { pct } from "@/lib/utils";
@@ -27,26 +27,16 @@ export async function DashboardHome() {
 
   return (
     <div className="mx-auto max-w-[1500px] space-y-5 sm:space-y-6">
-      <Card className="relative min-h-[390px] overflow-hidden border-0 bg-gradient-to-br from-teal-950 via-teal-800 to-cyan-600 p-5 text-white sm:min-h-[350px] sm:p-6 md:min-h-[325px] md:p-8">
+      <Card className="relative min-h-[430px] overflow-hidden border-0 bg-gradient-to-br from-teal-950 via-teal-800 to-cyan-600 p-5 text-white sm:min-h-[370px] sm:p-6 md:min-h-[350px] md:p-8">
         <div className="pointer-events-none absolute -left-20 bottom-[-90px] h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
         <div className="pointer-events-none absolute left-[42%] top-[-90px] h-64 w-64 rounded-full bg-white/10 blur-3xl" />
         <div className="pointer-events-none absolute right-[-70px] top-[-70px] h-52 w-52 rounded-full border border-white/10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-[48%] bg-gradient-to-l from-cyan-100/14 via-teal-500/5 to-transparent sm:w-[42%]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 z-[1] h-[245px] w-[158px] overflow-hidden sm:inset-y-0 sm:h-auto sm:w-[40%] md:w-[38%]">
-          <div className="absolute inset-0 bg-gradient-to-l from-cyan-100/12 via-transparent to-transparent" />
-          <Image
-            src="/hulwah-portrait-pro.webp"
-            alt="Hulwah Qurratu Aini, S.Pd."
-            width={360}
-            height={420}
-            priority
-            sizes="(max-width: 639px) 270px, (max-width: 1023px) 420px, 480px"
-            className="absolute left-1/2 top-0 h-[315px] w-auto max-w-none -translate-x-1/2 select-none object-contain drop-shadow-[0_22px_30px_rgba(4,47,46,0.28)] sm:top-[-34px] sm:h-[500px] md:top-[-52px] md:h-[540px]"
-          />
-        </div>
-        <div className="pointer-events-none absolute inset-y-0 right-[34%] z-[2] hidden w-24 bg-gradient-to-r from-teal-800/20 to-transparent sm:block" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-[52%] bg-gradient-to-l from-cyan-100/14 via-teal-500/5 to-transparent sm:w-[46%]" />
 
-        <div className="relative z-10 flex min-h-[350px] max-w-full flex-col justify-between gap-6 sm:min-h-[302px] sm:max-w-[68%] md:min-h-[261px] md:max-w-[64%] lg:max-w-[62%]">
+        <TeacherPortrait className="absolute bottom-0 right-1 z-[3] h-[252px] w-[172px] sm:bottom-[-8px] sm:right-3 sm:h-[355px] sm:w-[280px] md:right-5 md:h-[382px] md:w-[310px] lg:right-8 lg:w-[335px]" />
+        <div className="pointer-events-none absolute inset-y-0 right-[31%] z-[4] hidden w-28 bg-gradient-to-r from-teal-800/28 to-transparent md:block" />
+
+        <div className="relative z-10 flex min-h-[390px] max-w-full flex-col justify-between gap-6 sm:min-h-[322px] sm:max-w-[62%] md:min-h-[286px] md:max-w-[61%] lg:max-w-[62%]">
           <div>
             <div className="mb-3 inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] font-bold tracking-[.16em] text-white/85 backdrop-blur-md sm:text-[11px]">
               TRACK • GUIDE • GROW
@@ -54,10 +44,10 @@ export async function DashboardHome() {
             <h1 className="max-w-full text-[27px] font-extrabold leading-[1.08] tracking-tight sm:max-w-3xl sm:text-3xl md:text-4xl">
               Assalamu&apos;alaikum, <span className="text-cyan-100">{data.teacherName}</span> 👋
             </h1>
-            <p className="mt-3 max-w-[calc(100%_-_118px)] text-sm leading-6 text-white/80 sm:max-w-2xl md:text-[15px]">
+            <p className="mt-3 max-w-[calc(100%_-_112px)] text-sm leading-6 text-white/80 sm:max-w-xl md:text-[15px]">
               Hari ini ada <b className="text-white">{data.present} siswa hadir</b>.{" "}
               {data.present === 0
-                ? "Absensi hari ini belum dicatat."
+                ? "Absensi hari ini belum dicatat. Hafalan tetap dapat langsung diinput."
                 : data.waiting > 0
                   ? `${data.waiting} siswa masih menunggu setoran hafalan baru.`
                   : "Semua siswa hadir sudah menyelesaikan hafalan baru hari ini. MasyaAllah!"}
