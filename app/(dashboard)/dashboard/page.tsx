@@ -1,13 +1,21 @@
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, BookOpenCheck, CalendarCheck2, CheckCircle2, Clock3, Users } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowRight,
+  BookOpenCheck,
+  CalendarCheck2,
+  CheckCircle2,
+  Clock3,
+  Users,
+} from "lucide-react";
 import { Card, Progress } from "@/components/ui";
-import { getDashboardData } from "@/lib/data";
+import { getDashboardDataFast } from "@/lib/data-fast";
 import { pct } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const data = await getDashboardData();
+  const data = await getDashboardDataFast();
   const total = data.students.length;
   const progress = pct(data.submitted, data.present);
   const stats = [
@@ -19,33 +27,31 @@ export default async function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-[1500px] space-y-5 sm:space-y-6">
-      <Card className="relative min-h-[390px] overflow-hidden border-0 bg-gradient-to-br from-teal-950 via-teal-800 to-cyan-600 p-5 text-white sm:min-h-[360px] sm:p-6 md:min-h-[330px] md:p-8">
+      <Card className="relative min-h-[390px] overflow-hidden border-0 bg-gradient-to-br from-teal-950 via-teal-800 to-cyan-600 p-5 text-white sm:min-h-[350px] sm:p-6 md:min-h-[325px] md:p-8">
         <div className="pointer-events-none absolute -left-20 bottom-[-90px] h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
         <div className="pointer-events-none absolute left-[42%] top-[-90px] h-64 w-64 rounded-full bg-white/10 blur-3xl" />
         <div className="pointer-events-none absolute right-[-70px] top-[-70px] h-52 w-52 rounded-full border border-white/10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-[46%] bg-gradient-to-l from-cyan-200/10 via-teal-500/5 to-transparent sm:w-[40%]" />
+        <div className="pointer-events-none absolute bottom-4 right-3 h-40 w-40 rounded-full bg-cyan-200/15 blur-3xl sm:bottom-8 sm:right-12 sm:h-56 sm:w-56" />
 
-        <div className="pointer-events-none absolute bottom-4 right-4 h-[138px] w-[112px] overflow-hidden rounded-[22px] border border-white/30 bg-white/10 shadow-2xl ring-1 ring-black/5 sm:bottom-5 sm:right-5 sm:h-[166px] sm:w-[132px] md:bottom-5 md:right-5 md:top-5 md:h-auto md:w-[32%] lg:w-[30%]">
-          <img
-            src="/hulwah-hero.webp"
-            alt=""
-            aria-hidden="true"
-            loading="eager"
-            decoding="async"
-            className="h-full w-full object-cover object-[50%_42%]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-teal-950/25 via-transparent to-white/5" />
-          <div className="absolute inset-y-0 left-0 hidden w-12 bg-gradient-to-r from-teal-900/25 to-transparent md:block" />
-        </div>
+        <img
+          src="/hulwah-portrait-pro.webp"
+          alt="Hulwah Qurratu Aini, S.Pd."
+          loading="eager"
+          decoding="async"
+          className="pointer-events-none absolute bottom-[-34px] right-[-18px] z-[1] h-[235px] w-auto max-w-none object-contain drop-shadow-[0_22px_30px_rgba(4,47,46,0.28)] sm:bottom-[-52px] sm:right-[10px] sm:h-[305px] md:bottom-[-62px] md:right-[2%] md:h-[355px] lg:right-[5%]"
+        />
+        <div className="pointer-events-none absolute inset-y-0 right-[32%] z-[2] hidden w-28 bg-gradient-to-r from-teal-800/30 to-transparent sm:block" />
 
-        <div className="relative z-10 flex min-h-[350px] max-w-full flex-col justify-between gap-6 sm:min-h-[315px] md:min-h-[266px] md:max-w-[64%] lg:max-w-[62%]">
+        <div className="relative z-10 flex min-h-[350px] max-w-full flex-col justify-between gap-6 sm:min-h-[302px] sm:max-w-[67%] md:min-h-[261px] md:max-w-[64%] lg:max-w-[62%]">
           <div>
             <div className="mb-3 inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] font-bold tracking-[.16em] text-white/85 backdrop-blur-md sm:text-[11px]">
               TRACK • GUIDE • GROW
             </div>
-            <h1 className="max-w-3xl text-[27px] font-extrabold leading-[1.08] tracking-tight sm:text-3xl md:text-4xl">
+            <h1 className="max-w-[92%] text-[27px] font-extrabold leading-[1.08] tracking-tight sm:max-w-3xl sm:text-3xl md:text-4xl">
               Assalamu&apos;alaikum, <span className="text-cyan-100">{data.teacherName}</span> 👋
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/80 md:text-[15px]">
+            <p className="mt-3 max-w-[92%] text-sm leading-6 text-white/80 sm:max-w-2xl md:text-[15px]">
               Hari ini ada <b className="text-white">{data.present} siswa hadir</b>.{" "}
               {data.present === 0
                 ? "Absensi hari ini belum dicatat."
@@ -53,15 +59,15 @@ export default async function DashboardPage() {
                   ? `${data.waiting} siswa masih menunggu setoran.`
                   : "Semua siswa hadir sudah menyelesaikan setoran. MasyaAllah!"}
             </p>
-            <div className="mt-5 inline-flex max-w-[calc(100%_-_120px)] items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2.5 text-[11px] text-white/80 backdrop-blur-md sm:max-w-full sm:px-4 sm:py-3 sm:text-xs">
+            <div className="mt-5 hidden items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-xs text-white/80 backdrop-blur-md sm:inline-flex">
               <BookOpenCheck size={16} className="shrink-0 text-cyan-200" />
-              <span className="truncate sm:whitespace-normal">Personal Tahfidz Dashboard • Hulwah Qurratu Aini, S.Pd.</span>
+              <span>Personal Tahfidz Dashboard • Hulwah Qurratu Aini, S.Pd.</span>
             </div>
           </div>
-          <div className="max-w-[calc(100%_-_130px)] sm:max-w-none">
+          <div className="max-w-[56%] sm:max-w-none">
             <Link
               href="/submissions"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-teal-800 shadow-xl shadow-teal-950/10 transition hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-extrabold text-teal-800 shadow-xl shadow-teal-950/10 transition duration-150 hover:-translate-y-0.5 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/25 active:translate-y-0"
             >
               Mulai Setoran <ArrowRight size={17} />
             </Link>
@@ -94,7 +100,7 @@ export default async function DashboardPage() {
             <Mini value={data.izin} label="Izin" />
             <Mini value={data.sakit} label="Sakit" />
           </div>
-          <Link href="/submissions" className="mt-5 inline-flex min-h-10 items-center gap-2 text-sm font-bold text-teal-700 hover:text-teal-900">Lihat daftar setoran <ArrowRight size={15} /></Link>
+          <Link href="/submissions" className="mt-5 inline-flex min-h-10 items-center gap-2 text-sm font-bold text-teal-700 transition hover:text-teal-900">Lihat daftar setoran <ArrowRight size={15} /></Link>
         </Card>
 
         <div id="attention" className="scroll-mt-24">
