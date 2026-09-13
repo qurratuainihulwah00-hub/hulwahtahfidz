@@ -65,7 +65,7 @@ export function SubmissionBoard({ rows, date, mode = "hafalan_baru" }: { rows: Q
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="truncate font-extrabold">{row.full_name}</h3>
                   <Badge>Kelas {row.class_name}</Badge>
-                  {row.submitted && <Badge tone="green">Sudah setor</Badge>}
+                  {row.submitted && mode !== "murajaah" && <Badge tone="green">Sudah setor</Badge>}
                 </div>
                 <p className="mt-3 text-[11px] font-semibold uppercase tracking-wide text-muted">Terakhir</p>
                 <p className="mt-1 text-sm font-semibold">{row.lastMemorization}</p>
@@ -97,6 +97,7 @@ function SubmissionModal({ student, date, defaultType, onClose }: { student: Que
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState("");
+  const isMurajaah = defaultType === "murajaah";
 
   const submit = (formData: FormData) => startTransition(async () => {
     setMessage("");
@@ -110,7 +111,7 @@ function SubmissionModal({ student, date, defaultType, onClose }: { student: Que
     const result = await createSubmissionAction({
       studentId: student.id,
       date,
-      type: String(formData.get("type")) as "hafalan_baru" | "murajaah",
+      type: defaultType,
       surahName: String(formData.get("surah")),
       startAyah,
       endAyah,
@@ -122,7 +123,7 @@ function SubmissionModal({ student, date, defaultType, onClose }: { student: Que
     });
 
     if (result.ok) {
-      setMessage("Berhasil disimpan.");
+      setMessage(isMurajaah ? "Murajaah berhasil disimpan." : "Setoran berhasil disimpan.");
       router.refresh();
       window.setTimeout(onClose, 350);
     } else {
@@ -135,7 +136,7 @@ function SubmissionModal({ student, date, defaultType, onClose }: { student: Que
       <div className="max-h-[94dvh] w-full max-w-xl overflow-y-auto rounded-t-[26px] bg-white p-5 shadow-2xl md:max-h-[92vh] md:rounded-[26px] md:p-6">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="label">Catat Aktivitas</p>
+            <p className="label">{isMurajaah ? "Catat Murajaah" : "Catat Setoran Hafalan"}</p>
             <h3 className="mt-1 truncate text-xl font-extrabold">{student.full_name}</h3>
             <p className="mt-1 text-xs leading-5 text-muted">Kelas {student.class_name} · terakhir {student.lastMemorization}</p>
           </div>
@@ -145,7 +146,17 @@ function SubmissionModal({ student, date, defaultType, onClose }: { student: Que
         </div>
 
         <form action={submit} className="mt-6 grid gap-4 sm:grid-cols-2">
-          <div className="sm:col-span-2"><label className="mb-2 block text-xs font-bold">Jenis</label><select name="type" defaultValue={defaultType} className="input"><option value="hafalan_baru">Hafalan Baru</option><option value="murajaah">Murajaah</option></select></div>
+          {isMurajaah ? (
+            <div className="sm:col-span-2 rounded-2xl border border-cyan-100 bg-cyan-50/70 px-4 py-3">
+              <div className="text-xs font-extrabold text-cyan-900">Mode Murajaah</div>
+              <p className="mt-1 text-[11px] leading-5 text-cyan-800/75">Form ini khusus penguatan hafalan lama. Data yang disimpan selalu tercatat sebagai murajaah.</p>
+            </div>
+          ) : (
+            <div className="sm:col-span-2 rounded-2xl border border-teal-100 bg-teal-50/70 px-4 py-3">
+              <div className="text-xs font-extrabold text-teal-900">Mode Hafalan Baru</div>
+              <p className="mt-1 text-[11px] leading-5 text-teal-800/75">Form ini khusus setoran hafalan baru.</p>
+            </div>
+          )}
           <div className="sm:col-span-2"><label className="mb-2 block text-xs font-bold">Surah</label><select name="surah" className="input">{QURAN_SURAHS.map((surah) => <option key={surah}>{surah}</option>)}</select></div>
           <div><label className="mb-2 block text-xs font-bold">Ayat awal</label><input name="start" type="number" min="1" required defaultValue="1" className="input" /></div>
           <div><label className="mb-2 block text-xs font-bold">Ayat akhir</label><input name="end" type="number" min="1" required defaultValue="5" className="input" /></div>
@@ -153,9 +164,9 @@ function SubmissionModal({ student, date, defaultType, onClose }: { student: Que
             <div key={name}><label className="mb-2 block text-xs font-bold">{label}</label><select name={name} className="input" defaultValue="4"><option value="5">5 · Sangat baik</option><option value="4.5">4.5</option><option value="4">4 · Baik</option><option value="3.5">3.5</option><option value="3">3 · Perlu penguatan</option><option value="2">2</option><option value="1">1</option></select></div>
           ))}
           <div><label className="mb-2 block text-xs font-bold">Jumlah kesalahan</label><input name="mistakes" type="number" min="0" defaultValue="0" className="input" /></div>
-          <div className="sm:col-span-2"><label className="mb-2 block text-xs font-bold">Catatan setoran</label><textarea name="note" className="textarea" placeholder="Contoh: makhraj ض mulai membaik, tetapi mad masih perlu diperhatikan." /></div>
+          <div className="sm:col-span-2"><label className="mb-2 block text-xs font-bold">{isMurajaah ? "Catatan murajaah" : "Catatan setoran"}</label><textarea name="note" className="textarea" placeholder={isMurajaah ? "Contoh: An-Naba ayat 1–20 mulai lancar, mad masih perlu diperkuat." : "Contoh: makhraj ض mulai membaik, tetapi mad masih perlu diperhatikan."} /></div>
           {message && <p className="sm:col-span-2 rounded-xl bg-teal-50 px-3 py-2 text-sm font-semibold text-teal-800">{message}</p>}
-          <div className="sm:col-span-2 flex justify-end"><button className="button-primary w-full sm:min-w-40 sm:w-auto" disabled={pending}>{pending ? <Loader2 className="animate-spin" size={16} /> : <BookOpenCheck size={16} />} {pending ? "Menyimpan..." : "Simpan"}</button></div>
+          <div className="sm:col-span-2 flex justify-end"><button className="button-primary w-full sm:min-w-40 sm:w-auto" disabled={pending}>{pending ? <Loader2 className="animate-spin" size={16} /> : <BookOpenCheck size={16} />} {pending ? "Menyimpan..." : isMurajaah ? "Simpan Murajaah" : "Simpan Setoran"}</button></div>
         </form>
       </div>
     </div>
