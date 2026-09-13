@@ -1,10 +1,10 @@
 import { StudentDirectory } from "@/components/student-directory";
-import { getStudentOverviews } from "@/lib/data";
+import { getStudentOverviewsFast } from "@/lib/data-fast";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 15;
 
 export default async function StudentsPage() {
-  const students = await getStudentOverviews();
+  const students = await getStudentOverviewsFast();
 
   return (
     <div className="mx-auto max-w-7xl space-y-5">
