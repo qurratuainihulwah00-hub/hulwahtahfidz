@@ -4,7 +4,7 @@ import { AttendanceBoard } from "@/components/attendance-board";
 import { getAttendanceForDateFast } from "@/lib/data-fast";
 import type { AttendanceStatus } from "@/lib/types";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 15;
 
 export default async function AttendancePage() {
   const day = format(new Date(), "yyyy-MM-dd");
