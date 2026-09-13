@@ -19,7 +19,7 @@ npm install
 npm run dev
 ```
 
-Set `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the intended Supabase project. Apply `supabase/migrations/202609130001_initial_tahfidz_schema.sql` through Supabase migration tooling.
+Set `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` dari project Supabase yang benar. Jalankan migration di `supabase/migrations` **berurutan**: initial schema → security hardening → Hulwah workspace bootstrap.
 
 ## Design
 
@@ -31,7 +31,7 @@ Set `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the intended Supabase project. A
 
 ## Deployment rule
 
-Do not create repeated production deployments during development. Build and verify locally / via CI or preview only if necessary, then deploy production once at the end of stage 4.
+Jangan membuat production deploy berulang selama development. Build dan verifikasi dilakukan tanpa production deploy, lalu production dilepas **sekali di akhir tahap 4**.
 
 ## Data awal workspace
 
@@ -47,4 +47,4 @@ Target kelas sementara:
 - 2 An Nur — Target 1: Al-Mulk → Al-Jinn; Target 2: Al-Muzzammil → Al-Baqarah: 29.
 - 3 Az Zukhruf — Target 1: Al-Baqarah: 30 → Al-Baqarah: 112; Target 2: Al-Baqarah: 113 → Al-Baqarah: 190.
 
-Foto siswa tidak digunakan. Siswa ditampilkan dengan inisial. Foto guru disiapkan melalui `profiles.avatar_url` dan dapat ditambahkan ketika foto Ustadzah tersedia.
+Foto siswa tidak digunakan. Siswa ditampilkan dengan inisial. Foto guru disiapkan melalui `profiles.avatar_url` dan dapat ditambahkan saat foto Ustadzah tersedia.
